@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: url_pg
+    environment:
+      POSTGRES_DB: url_shortener
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7
+    container_name: url_redis
+    ports:
+      - "6379:6379"
