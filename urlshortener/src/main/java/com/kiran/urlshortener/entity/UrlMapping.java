@@ -12,7 +12,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,7 +38,6 @@ public class UrlMapping {
     private String shortCode;
 
     @Column(nullable = false, columnDefinition = "TEXT")
-    @NotNull
     @NotBlank
     private String longUrl;
 
