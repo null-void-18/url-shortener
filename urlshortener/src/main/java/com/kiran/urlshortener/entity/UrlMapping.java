@@ -37,7 +37,7 @@ public class UrlMapping {
     @Column(length = 10, unique = true)
     private String shortCode;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false, unique = true,columnDefinition = "TEXT")
     @NotBlank
     private String longUrl;
 

@@ -34,7 +34,22 @@ public class UrlService {
             throw new IllegalArgumentException("Original URL cannot be null or blank");
         }
 
-        UrlMapping urlMapping = new UrlMapping();
+        UrlMapping urlMapping = urlMappingRepository.findByLongUrl(originalUrl).orElse(null);
+
+        if(urlMapping != null) {
+            String shortCode = urlMapping.getShortCode();
+
+            LocalDateTime expiryAt = urlMapping.getExpiryAt();
+
+            if (expiryAt == null || expiryAt.isBefore(expiryTime)) {
+                urlMapping.setExpiryAt(expiryTime);
+                urlMappingRepository.save(urlMapping);
+            }
+            return shortCode;
+        }
+        
+
+        urlMapping = new UrlMapping();
         urlMapping.setLongUrl(originalUrl);
         urlMapping.setExpiryAt(expiryTime);
         urlMapping.setActive(true);
