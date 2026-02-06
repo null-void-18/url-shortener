@@ -1,6 +1,7 @@
 package com.kiran.urlshortener.service;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
@@ -8,6 +9,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.kiran.urlshortener.entity.UrlMapping;
+import com.kiran.urlshortener.events.UrlCreatedEvent;
 import com.kiran.urlshortener.repository.UrlMappingRepository;
 
 
@@ -17,15 +19,17 @@ public class UrlService {
     private final UrlMappingRepository urlMappingRepository;
     private final ShortCodeGenerator shortCodeGenerator;
     private final StringRedisTemplate redisTemplate;
+    private final UrlEventProducer urlEventProducer;
     private static final String SHORT_PREFIX = "short:";
     private static final String CLICK_PREFIX = "click:";
 
 
     public UrlService(UrlMappingRepository urlMappingRepository,
-                      ShortCodeGenerator shortCodeGenerator,StringRedisTemplate redisTemplate) {
+                      ShortCodeGenerator shortCodeGenerator,StringRedisTemplate redisTemplate, UrlEventProducer urlEventProducer) {
         this.urlMappingRepository = urlMappingRepository;
         this.shortCodeGenerator = shortCodeGenerator;
         this.redisTemplate = redisTemplate;
+        this.urlEventProducer = urlEventProducer;
     }
 
     public String createShortUrl(String originalUrl, LocalDateTime expiryTime) {
@@ -80,6 +84,15 @@ public class UrlService {
                 }
         } catch (Exception e) {
         }
+
+
+        urlEventProducer.sendUrlCreatedEvent(
+            new UrlCreatedEvent(
+                urlMapping.getId(),
+                urlMapping.getShortCode(),
+                Instant.now()
+            )
+        );
 
         return shortCode;
     }
