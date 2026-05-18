@@ -9,7 +9,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                dir('url-shortener') {
+                dir('urlshortener') {
                     sh 'mvn clean compile'
                 }
             }
@@ -17,7 +17,7 @@ pipeline {
 
         stage('Test') {
             steps {
-                dir('url-shortener') {
+                dir('urlshortener') {
                     sh 'mvn test'
                 }
             }
