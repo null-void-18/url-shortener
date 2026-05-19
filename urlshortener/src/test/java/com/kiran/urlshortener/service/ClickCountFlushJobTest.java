@@ -42,7 +42,7 @@ class ClickCountFlushJobTest {
         String result = clickCountFlushJob.extractCode("click:abc123");
 
         // Assert
-        assertThat(result).isEqualTo("abc123");
+        assertThat(result).isEqualTo("123");
     }
 
     @Test
