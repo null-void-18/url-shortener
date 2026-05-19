@@ -9,25 +9,28 @@ pipeline {
 
         stage('Build') {
             steps {
-                dir('urlshortener') {
-                    sh 'mvn clean compile'
-                }
+                sh 'mvn clean compile'
             }
         }
 
         stage('Test') {
             steps {
-                dir('urlshortener') {
-                    sh 'mvn test'
-                }
+                sh 'mvn test'
             }
         }
 
         stage('Package') {
             steps {
-                dir('urlshortener') {
-                    sh 'mvn clean package -DskipTests'
-                }
+                sh 'mvn clean package -DskipTests'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh '''
+                pkill -f 'urlshortener.*jar' || true
+                nohup java -jar target/urlshortener-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
+                '''
             }
         }
     }
