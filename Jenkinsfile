@@ -22,5 +22,13 @@ pipeline {
                 }
             }
         }
+
+        stage('Package') {
+            steps {
+                dir('urlshortener') {
+                    sh 'mvn clean package -DskipTests'
+                }
+            }
+        }
     }
 }
