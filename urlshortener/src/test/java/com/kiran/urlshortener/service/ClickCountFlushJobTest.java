@@ -39,10 +39,10 @@ class ClickCountFlushJobTest {
     @Test
     void extractCode_shouldExtractShortCodeFromKey() {
         // Act
-        String result = clickCountFlushJob.extractCode("click:123");
+        String result = clickCountFlushJob.extractCode("click:12");
 
         // Assert
-        assertThat(result).isEqualTo("123");
+        assertThat(result).isEqualTo("12");
     }
 
     @Test
