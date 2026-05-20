@@ -35,8 +35,12 @@ pipeline {
             steps {
                 dir('urlshortener') {
                     sh '''
-                    pkill -f 'urlshortener.*jar' || true
-                    nohup java -jar target/urlshortener-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
+                    docker compose down || true
+                    docker compose up --build -d
+
+                    sleep 20
+
+                    docker compose ps
                     '''
                 }
             }
