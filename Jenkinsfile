@@ -35,12 +35,12 @@ pipeline {
             steps {
                 dir('urlshortener') {
                     sh '''
-                    docker compose down || true
-                    docker compose up --build -d
+                    docker-compose down || true
+                    docker-compose up --build -d
 
                     sleep 20
 
-                    docker compose ps
+                    docker-compose ps
                     '''
                 }
             }
